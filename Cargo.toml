@@ -2,6 +2,8 @@
 name = "better_enums_derive"
 version = "0.1.0"
 edition = "2024"
+description = "This crate is not intended to use directly, use better_enums instead"
+license = "MIT"
 
 [lib]
 proc-macro = true
