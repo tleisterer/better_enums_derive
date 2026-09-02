@@ -40,7 +40,7 @@ pub fn generate_code(enum_name: &Ident, repr: &Ident, variants: &[VariantMapping
         crate_name("better_enums").expect("If this crate is not included something went wrong");
 
     let krate = match krate {
-        FoundCrate::Itself => quote! { crate },
+        FoundCrate::Itself => quote! { better_enums },
         FoundCrate::Name(name) => {
             let ident = Ident::new(&name, Span::call_site());
             quote! { #ident }
@@ -49,10 +49,10 @@ pub fn generate_code(enum_name: &Ident, repr: &Ident, variants: &[VariantMapping
 
     quote! {
         impl std::convert::TryFrom<#repr> for #enum_name {
-            type Error = #krate::generate::BetterEnumsError<#repr>;
+            type Error = #krate::error::BetterEnumsError<#repr>;
             fn try_from(value: #repr) -> Result<Self, Self::Error> {
                 #(#arms)*
-                Err(Self::Error { value })
+                Err(Self::Error::new(value))
             }
         }
     }
